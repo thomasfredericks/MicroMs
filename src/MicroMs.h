@@ -44,16 +44,18 @@ public:
 #define MICRO_MS_CONCAT_(a, b) a##b
 #define MICRO_MS_CONCAT(a, b) MICRO_MS_CONCAT_(a, b)
 
+
+#define MICRO_MS_INTSTANTIATE_LOOP_FOR(name,duration) static unsigned long name = millis(); \
+    while (millis() - name < duration )
+
+#define MICRO_MS_INTSTANTIATE_EVERY(name,interval) static MicroMsInterval name(interval); \
+    if (name.triggered())
+
 // PUBLIC
 // ----------------------------------------------------------------
-#define MICRO_MS_EVERY(interval)                                                        \
-    static MicroMsInterval MICRO_MS_CONCAT(_micro_ms_every_timer_, __COUNTER__)(interval); \
-    if (MICRO_MS_CONCAT(_micro_ms_every_timer_, __COUNTER__).triggered())
 
+#define MICRO_MS_EVERY(interval) MICRO_MS_INTSTANTIATE_EVERY( MICRO_MS_CONCAT(_micro_ms_, __COUNTER__), interval)                                                       \
 
-#define MICRO_MS_LOOP_FOR(duration)                        \                                                  \
-    static MicroMsInterval MICRO_MS_CONCAT(_micro_ms_every_timer_, __COUNTER__)(interval); \
-    while (MICRO_MS_CONCAT(_micro_ms_every_timer_, __COUNTER__).triggered() == false)
-
+#define MICRO_MS_LOOP_FOR(duration)  MICRO_MS_INTSTANTIATE_LOOP_FOR( MICRO_MS_CONCAT(_micro_ms_, __COUNTER__), duration)                                                       \
 
 #endif // __MICROMS_H__
