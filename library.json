@@ -1,0 +1,13 @@
+{
+  "name": "MicroMs",
+  "keywords": "timing",
+  "description": "An Arduino Timekeeping Macro Library",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thomasfredericks/MicroMs.git"
+  },
+  "version": "0.1",
+  "exclude": ["*.png", "*.zip"],
+  "frameworks": "arduino",
+  "platforms": "*"
+}
