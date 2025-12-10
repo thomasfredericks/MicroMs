@@ -6,38 +6,47 @@
 // PUBLIC
 // ----------------------------------------------------------------
 
-class MicroMsInterval
+class MicroMsChronometer
 {
 private:
-    uint32_t interval;
-    uint32_t lastMillis;
+    unsigned long _start;  
+    public:
+    unsigned long getElapsed() {
+        return millis() - _start;
+    }
+    void add(unsigned long delta) {
+        _start += delta;
+    }
+    void restart()
+    {
+        _start = millis();
+    }
+};
+
+
+class MicroMsInterval : MicroMsChronometer
+{
+private:
+    unsigned long  _interval;
+
 
 public:
-    MicroMsInterval(uint32_t interval)
-        : interval(interval), lastMillis(millis()) {}
+    MicroMsInterval(unsigned long  interval)
+        : _interval(interval) {}
 
     bool triggered()
     {
-        uint32_t now = millis();
-        if (now - lastMillis >= interval)
+        if (getElapsed() >= _interval)
         {
             // Drift-corrected update
-            lastMillis += interval;
-            // Optional: catch up if system is slow
-            if (now - lastMillis >= interval)
-            {
-                lastMillis = now;
-            }
+            add(_interval);
             return true;
         }
         return false;
     }
 
-    void reset()
-    {
-        lastMillis = millis();
-    }
 };
+
 
 // PRIVATE
 // ----------------------------------------------------------------
